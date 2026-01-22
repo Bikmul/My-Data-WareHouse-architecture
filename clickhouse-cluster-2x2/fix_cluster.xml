@@ -1,0 +1,41 @@
+<yandex>
+<remote_servers>
+    <company_cluster>
+        <!-- Каждая нода - отдельный шард -->
+        <shard>
+            <internal_replication>false</internal_replication>
+            <replica>
+                <host>172.18.0.3</host>  <!-- ch1 -->
+                <port>9000</port>
+            </replica>
+        </shard>
+        <shard>
+            <internal_replication>false</internal_replication>
+            <replica>
+                <host>172.18.0.4</host>  <!-- ch2 -->
+                <port>9000</port>
+            </replica>
+        </shard>
+        <shard>
+            <internal_replication>false</internal_replication>
+            <replica>
+                <host>172.18.0.5</host>  <!-- ch3 -->
+                <port>9000</port>
+            </replica>
+        </shard>
+        <shard>
+            <internal_replication>false</internal_replication>
+            <replica>
+                <host>172.18.0.8</host>  <!-- ch4 -->
+                <port>9000</port>
+            </replica>
+        </shard>
+    </company_cluster>
+</remote_servers>
+
+<!-- Макросы для Replicated таблиц (если нужны) -->
+<macros>
+    <shard>01</shard>
+    <replica>ch1</replica>
+</macros>
+</yandex>

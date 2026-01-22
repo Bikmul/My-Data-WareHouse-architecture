@@ -1,0 +1,107 @@
+
+version: '3.8'
+
+services:
+  # ZooKeeper кластер (3 ноды)
+  zookeeper1:
+    image: zookeeper:3.8
+    container_name: zk1
+    ports:
+      - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zk1:2888:3888;2181 server.2=zk2:2888:3888;2181 server.3=zk3:2888:3888;2181
+    volumes:
+      - ./zookeeper1/data:/data
+      - ./zookeeper1/datalog:/datalog
+    networks:
+      - clickhouse_net
+
+  zookeeper2:
+    image: zookeeper:3.8
+    container_name: zk2
+    ports:
+      - "2182:2181"
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zk1:2888:3888;2181 server.2=zk2:2888:3888;2181 server.3=zk3:2888:3888;2181
+    volumes:
+      - ./zookeeper2/data:/data
+      - ./zookeeper2/datalog:/datalog
+    networks:
+      - clickhouse_net
+
+  zookeeper3:
+    image: zookeeper:3.8
+    container_name: zk3
+    ports:
+      - "2183:2181"
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zk1:2888:3888;2181 server.2=zk2:2888:3888;2181 server.3=zk3:2888:3888;2181
+    volumes:
+      - ./zookeeper3/data:/data
+      - ./zookeeper3/datalog:/datalog
+    networks:
+      - clickhouse_net
+
+  # ClickHouse кластер: 2 шарда × 2 реплики
+  clickhouse01:
+    image: clickhouse/clickhouse-server:23.8
+    container_name: ch1
+    hostname: ch1
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ./clickhouse01/data:/var/lib/clickhouse
+      - ./clickhouse01/config/config.xml:/etc/clickhouse-server/config.xml
+      - ./clickhouse01/config/users.xml:/etc/clickhouse-server/users.xml
+    networks:
+      - clickhouse_net
+
+  clickhouse02:
+    image: clickhouse/clickhouse-server:23.8
+    container_name: ch2
+    hostname: ch2
+    ports:
+      - "8124:8123"
+      - "9001:9000"
+    volumes:
+      - ./clickhouse02/data:/var/lib/clickhouse
+      - ./clickhouse02/config/config.xml:/etc/clickhouse-server/config.xml
+      - ./clickhouse02/config/users.xml:/etc/clickhouse-server/users.xml
+    networks:
+      - clickhouse_net
+
+  clickhouse03:
+    image: clickhouse/clickhouse-server:23.8
+    container_name: ch3
+    hostname: ch3
+    ports:
+      - "8125:8123"
+      - "9002:9000"
+    volumes:
+      - ./clickhouse03/data:/var/lib/clickhouse
+      - ./clickhouse03/config/config.xml:/etc/clickhouse-server/config.xml
+      - ./clickhouse03/config/users.xml:/etc/clickhouse-server/users.xml
+    networks:
+      - clickhouse_net
+
+  clickhouse04:
+    image: clickhouse/clickhouse-server:23.8
+    container_name: ch4
+    hostname: ch4
+    ports:
+      - "8126:8123"
+      - "9003:9000"
+    volumes:
+      - ./clickhouse04/data:/var/lib/clickhouse
+      - ./clickhouse04/config/config.xml:/etc/clickhouse-server/config.xml
+      - ./clickhouse04/config/users.xml:/etc/clickhouse-server/users.xml
+    networks:
+      - clickhouse_net
+
+networks:
+  clickhouse_net:
+    driver: bridge

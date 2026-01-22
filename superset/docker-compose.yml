@@ -1,0 +1,81 @@
+networks:
+  superset-network:
+    external: true
+
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: superset_postgres
+    environment:
+      POSTGRES_DB: superset
+      POSTGRES_USER: superset
+      POSTGRES_PASSWORD: superset
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U superset"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - superset-network
+
+  redis:
+    image: redis:7
+    container_name: superset_redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - superset-network
+
+  superset:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: superset-with-clickhouse  # ← ИЗМЕНИТЕ ЭТУ СТРОКУ!
+    container_name: superset_app
+    ports:
+      - "8088:8088"
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: superset
+      DATABASE_PASSWORD: superset
+      DATABASE_NAME: superset
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SUPERSET_SECRET_KEY: "your-secret-key-change-this"
+      SUPERSET_ENV: development
+      FLASK_ENV: development
+    volumes:
+      - superset_home:/app/superset_home
+      - ./config:/app/pythonpath
+      - ./docker-entrypoint.sh:/app/docker-entrypoint.sh
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: >
+      sh -c "
+      # Установите драйверы ClickHouse
+      /app/.venv/bin/pip install clickhouse-connect clickhouse-sqlalchemy &&
+      # Стандартная инициализация Superset
+      superset db upgrade &&
+      superset fab create-admin --username admin --firstname Admin --lastname User --email admin@example.com --password admin &&
+      superset init &&
+      /usr/bin/run-server.sh
+      "
+      "
+    networks:
+      - superset-network
+
+volumes:
+  postgres_data:
+  ./config:/app/pythonpath:
+  superset_home:/app/superset_home:
+  

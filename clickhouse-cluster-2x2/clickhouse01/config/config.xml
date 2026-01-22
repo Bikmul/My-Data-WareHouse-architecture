@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<yandex>
+    <!-- Основные настройки -->
+    <logger>
+        <level>trace</level>
+        <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+        <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+    </logger>
+
+    <listen_host>0.0.0.0</listen_host>
+    <http_port>8123</http_port>
+    <tcp_port>9000</tcp_port>
+    <interserver_http_port>9009</interserver_http_port>
+
+    <path>/var/lib/clickhouse/</path>
+    <tmp_path>/var/lib/clickhouse/tmp/</tmp_path>
+    <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
+    
+    <!-- Макросы -->
+    <macros><shard>01</shard><replica>ch1</replica></macros>
+
+    <!-- ZooKeeper -->
+    <zookeeper>
+        <node><host>zk1</host><port>2181</port></node>
+        <node><host>zk2</host><port>2181</port></node>
+        <node><host>zk3</host><port>2181</port></node>
+    </zookeeper>
+    
+    <!-- Конфигурация кластера с пользователем admin -->
+    <distributed_ddl>
+        <path>/clickhouse/task_queue/ddl</path>
+    </distributed_ddl>
+    <remote_servers>
+        <cluster_2shards_2replicas>
+            <shard>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>ch1</host>
+                    <port>9000</port>
+                    <user>admin</user>
+                    <password>password</password>
+                </replica>
+                <replica>
+                    <host>ch2</host>
+                    <port>9000</port>
+                    <user>admin</user>
+                    <password>password</password>
+                </replica>
+            </shard>
+            <shard>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>ch3</host>
+                    <port>9000</port>
+                    <user>admin</user>
+                    <password>password</password>
+                </replica>
+                <replica>
+                    <host>ch4</host>
+                    <port>9000</port>
+                    <user>admin</user>
+                    <password>password</password>
+                </replica>
+            </shard>
+        </cluster_2shards_2replicas>
+    </remote_servers>
+    
+    <users_config>users.xml</users_config>
+</yandex>

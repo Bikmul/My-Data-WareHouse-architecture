@@ -1,0 +1,284 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Продажа автомобилей BMW M3",
+  "aggregateRating": {
+    "@context": "https://schema.org",
+    "@type": "AggregateRating",
+    "bestRating": 5,
+    "reviewCount": 6,
+    "worstRating": 1,
+    "ratingValue": 4.2
+  },
+  "description": "Продажа автомобилей BMW M3",
+  "offers": {
+    "@context": "https://schema.org",
+    "@type": "AggregateOffer",
+    "offerCount": 13,
+    "offers": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "image": {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "contentUrl": "https://avatars.mds.yandex.net/get-autoru-vos/17971448/7b40f2396865a3045a41e6292acf3677/320x240",
+          "name": "BMW M3 Competition Package VI (G80) Рестайлинг",
+          "creator": {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "ТрансТехСервис | Импортные автомобили"
+          }
+        },
+        "url": "https://auto.ru/cars/new/group/bmw/m3/23978953/23979132/1130397825-3305a1aa/",
+        "price": 15800000,
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "RUR",
+        "priceValidUntil": "2026-01-19"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "image": {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "contentUrl": "https://avatars.mds.yandex.net/get-autoru-vos/17844485/f2e7aac82219a3875c756ed8395ec3ca/320x240",
+          "name": "BMW M3 Competition Package VI (G80) Рестайлинг",
+          "creator": {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "SGM Auto Group"
+          }
+        },
+        "url": "https://auto.ru/cars/new/group/bmw/m3/23979278/23979132/1130899638-65324f0a/",
+        "price": 18890000,
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "RUR",
+        "priceValidUntil": "2026-01-19"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "image": {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "contentUrl": "https://avatars.mds.yandex.net/get-autoru-vos/18129838/e531669a6791d4385beeea0496d99089/320x240",
+          "name": "BMW M3 Competition Package VI (G80) Рестайлинг",
+          "creator": {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "SGM Auto Group"
+          }
+        },
+        "url": "https://auto.ru/cars/new/group/bmw/m3/23978953/23979132/1130899429-a55c48a3/",
+        "price": 18790000,
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "RUR",
+        "priceValidUntil": "2026-01-19"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "image": {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "contentUrl": "https://avatars.mds.yandex.net/get-autoru-vos/15317912/d05643f2cc545936596fd0e4517f1d15/320x240",
+          "name": "BMW M3 CS VI (G80) Рестайлинг",
+          "creator": {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "SGM Auto Group"
+          }
+        },
+        "url": "https://auto.ru/cars/new/group/bmw/m3/24061069/24061085/1130899582-7f480e2b/",
+        "price": 27190000,
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "RUR",
+        "priceValidUntil": "2026-01-19"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "image": {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "contentUrl": "https://avatars.mds.yandex.net/get-autoru-vos/5348457/80ae240bd06ecea1caa84fb647645145/320x240",
+          "name": "BMW M3 Competition Package VI (G80) Рестайлинг",
+          "creator": {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "SGM Auto Group"
+          }
+        },
+        "url": "https://auto.ru/cars/new/group/bmw/m3/23979278/23979132/1130899628-9aaa5e7c/",
+        "price": 18790000,
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "RUR",
+        "priceValidUntil": "2026-01-19"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "image": {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "contentUrl": "https://avatars.mds.yandex.net/get-autoru-vos/18005086/a22c6c40db279014807735f7519d421a/320x240",
+          "name": "BMW M3 Competition Package VI (G80) Рестайлинг",
+          "creator": {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "SGM Auto Group"
+          }
+        },
+        "url": "https://auto.ru/cars/new/group/bmw/m3/23979278/23979132/1130899468-d986470a/",
+        "price": 22790000,
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "RUR",
+        "priceValidUntil": "2026-01-19"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "image": {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "contentUrl": "https://avatars.mds.yandex.net/get-autoru-vos/2156128/8417f56ef8577cf4191e8c5286a27ef6/320x240",
+          "name": "BMW M3 Competition Package VI (G80) Рестайлинг",
+          "creator": {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "SGM Auto Group"
+          }
+        },
+        "url": "https://auto.ru/cars/new/group/bmw/m3/23979278/23979132/1130899618-e6c68dbf/",
+        "price": 18990000,
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "RUR",
+        "priceValidUntil": "2026-01-19"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "image": {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "contentUrl": "https://avatars.mds.yandex.net/get-autoru-vos/18101889/50dcbae87fcc740817cfaa0e8367b6b9/320x240",
+          "name": "BMW M3 Competition Package VI (G80) Рестайлинг",
+          "creator": {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "SGM Auto Group"
+          }
+        },
+        "url": "https://auto.ru/cars/new/group/bmw/m3/23978953/23979132/1130899446-28d71bf6/",
+        "price": 22390000,
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "RUR",
+        "priceValidUntil": "2026-01-19"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "image": {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "contentUrl": "https://avatars.mds.yandex.net/get-autoru-vos/16446884/33c1cae298e9f04e2534cf0cdaf95fdb/320x240",
+          "name": "BMW M3 Competition Package VI (G80) Рестайлинг",
+          "creator": {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "ТрансТехСервис | Импортные автомобили"
+          }
+        },
+        "url": "https://auto.ru/cars/new/group/bmw/m3/23978953/23979132/1130397794-eeaccdb2/",
+        "price": 15600000,
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "RUR",
+        "priceValidUntil": "2026-01-19"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "image": {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "contentUrl": "https://avatars.mds.yandex.net/get-autoru-vos/15587596/24c7a7e92e548510f191eb8f23b80991/320x240",
+          "name": "BMW M3 Competition Package VI (G80) Рестайлинг",
+          "creator": {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "SGM Auto Group"
+          }
+        },
+        "url": "https://auto.ru/cars/new/group/bmw/m3/23979278/23979132/1130899595-47d28e09/",
+        "price": 21590000,
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "RUR",
+        "priceValidUntil": "2026-01-19"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "image": {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "contentUrl": "https://avatars.mds.yandex.net/get-autoru-vos/17637180/afc7e9322d1cbbe26d58baf94dcd5d80/320x240",
+          "name": "BMW M3 Competition Package VI (G80) Рестайлинг",
+          "creator": {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "BERG AUTO PREMIUM"
+          }
+        },
+        "url": "https://auto.ru/cars/new/group/bmw/m3/23978953/23979132/1128705953-ab3d8044/",
+        "price": 15900000,
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "RUR",
+        "priceValidUntil": "2026-01-19"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "image": {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "contentUrl": "https://avatars.mds.yandex.net/get-autoru-vos/1933512/ea1dbb14650123c365e69306571b993f/320x240",
+          "name": "BMW M3 Competition Package VI (G80) Рестайлинг",
+          "creator": {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "ТрансТехСервис | Импортные автомобили"
+          }
+        },
+        "url": "https://auto.ru/cars/new/group/bmw/m3/23978953/23979132/1130397896-4fd42385/",
+        "price": 16000000,
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "RUR",
+        "priceValidUntil": "2026-01-19"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Offer",
+        "image": {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "contentUrl": "https://avatars.mds.yandex.net/get-autoru-vos/11557313/46eefa5fe262236f01add3c8cd0e2174/320x240",
+          "name": "BMW M3 Competition Package VI (G80) Рестайлинг",
+          "creator": {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "BoutiQue Auto"
+          }
+        },
+        "url": "https://auto.ru/cars/new/group/bmw/m3/23978953/23979132/1130795360-8a327a9d/",
+        "price": 16300000,
+        "availability": "https://schema.org/PreOrder",
+        "priceCurrency": "RUR",
+        "priceValidUntil": "2026-01-19"
+      }
+    ],
+    "priceCurrency": "RUR",
+    "lowPrice": 15200000,
+    "highPrice": 27190000
+  }
+}
