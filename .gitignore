@@ -1,6 +1,7 @@
 # Игнорировать данные ClickHouse
 clickhouse-cluster-2x2/**/data/
 clickhouse-cluster-2x2/**/logs/
+clickhouse-cluster-2x2/**/datalogs/
 clickhouse-cluster-2x2/**/*.log
 
 # Docker volumes
