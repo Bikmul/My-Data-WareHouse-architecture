@@ -46,7 +46,7 @@ dag = DAG(
 class ClickHouseJsonLoader:
     """Класс для загрузки JSON данных в ClickHouse"""
     
-    def __init__(self, host: str = "172.18.0.1", port: int = 8123, 
+    def __init__(self, host: str = "ch1", port: int = 8123, 
                  user: str = "admin", password: str = "password",
                  database: str = "default"):
         
