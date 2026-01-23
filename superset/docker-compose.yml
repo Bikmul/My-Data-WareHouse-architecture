@@ -1,81 +1,63 @@
-networks:
-  superset-network:
-    external: true
+
+version: '3.8'
 
 services:
-
-  postgres:
-    image: postgres:15
-    container_name: superset_postgres
+  superset-db:
+    image: postgres:13-alpine
+    container_name: superset-postgres
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: superset
       POSTGRES_USER: superset
       POSTGRES_PASSWORD: superset
+      POSTGRES_DB: superset
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - superset-db-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U superset"]
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - superset-network
 
-  redis:
-    image: redis:7
-    container_name: superset_redis
+  superset-redis:
+    image: redis:7-alpine
+    container_name: superset-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - superset-redis-data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - superset-network
 
   superset:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: superset-with-clickhouse  # ← ИЗМЕНИТЕ ЭТУ СТРОКУ!
-    container_name: superset_app
+    build: .
+    container_name: superset-app
+    restart: unless-stopped
     ports:
       - "8088:8088"
     environment:
-      DATABASE_HOST: postgres
-      DATABASE_PORT: 5432
-      DATABASE_USER: superset
-      DATABASE_PASSWORD: superset
-      DATABASE_NAME: superset
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      SUPERSET_SECRET_KEY: "your-secret-key-change-this"
-      SUPERSET_ENV: development
-      FLASK_ENV: development
+      - DATABASE_URL=postgresql://superset:superset@superset-db:5432/superset
+      - REDIS_URL=redis://superset-redis:6379/0
+      - SUPERSET_SECRET_KEY=your-secret-key-change-this-in-production
+      - FLASK_ENV=development
+      - PYTHONPATH=/app/pythonpath
     volumes:
-      - superset_home:/app/superset_home
-      - ./config:/app/pythonpath
-      - ./docker-entrypoint.sh:/app/docker-entrypoint.sh
+      - superset-home:/app/superset_home
     depends_on:
-      postgres:
+      superset-db:
         condition: service_healthy
-      redis:
+      superset-redis:
         condition: service_healthy
-    command: >
-      sh -c "
-      # Установите драйверы ClickHouse
-      /app/.venv/bin/pip install clickhouse-connect clickhouse-sqlalchemy &&
-      # Стандартная инициализация Superset
-      superset db upgrade &&
-      superset fab create-admin --username admin --firstname Admin --lastname User --email admin@example.com --password admin &&
-      superset init &&
-      /usr/bin/run-server.sh
-      "
-      "
-    networks:
-      - superset-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8088/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
 
 volumes:
-  postgres_data:
-  ./config:/app/pythonpath:
-  superset_home:/app/superset_home:
-  
+  superset-db-data:
+  superset-redis-data:
+  superset-home:
