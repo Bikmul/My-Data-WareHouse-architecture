@@ -1,4 +1,4 @@
-cat > Makefile << 'EOF'
+
 .PHONY: help build up down restart logs init test clean
 
 help:
@@ -50,4 +50,3 @@ status:
 	@echo "=== ПРОВЕРКА SUPERSET ==="
 	@curl -s http://localhost:8088/health > /dev/null && \
 		echo "✅ Superset работает" || echo "❌ Superset не отвечает"
-EOF
