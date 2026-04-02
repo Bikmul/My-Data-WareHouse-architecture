@@ -9,6 +9,7 @@ from superset.tasks.types import FixedExecutor
 USER_SITE = '/app/superset_home/.local/lib/python3.10/site-packages'
 if USER_SITE not in sys.path:
     sys.path.insert(0, USER_SITE)
+    print(f"[Superset Config] Добавлен путь: {USER_SITE}")
 
 # ====== ОСНОВНЫЕ НАСТРОЙКИ ======
 SQLALCHEMY_DATABASE_URI = 'postgresql://superset:superset@superset-db:5432/superset'
@@ -25,22 +26,56 @@ ALERT_REPORTS_EXECUTORS = [FixedExecutor("admin")]
 # ====== WEBDRIVER НАСТРОЙКИ ДЛЯ FIREFOX ======
 WEBDRIVER_TYPE = "firefox"
 
+# Базовые аргументы для Firefox
 WEBDRIVER_OPTION_ARGS = [
     "--headless",
     "--no-sandbox",
     "--disable-dev-shm-usage",
-    "--window-size=1920,1080"
+    "--window-size=1920,1080",
+    "--disable-gpu",
+    "--disable-software-rasterizer",
+    "--disable-extensions",
+    "--disable-setuid-sandbox"
 ]
 
+# Дополнительные настройки для Firefox
+WEBDRIVER_BASE_OPTIONS = {
+    "log": {"level": "info"},
+    "prefs": {
+        "pdfjs.disabled": True,
+        "print.print_to_file": True,
+        "print.printer_Mozilla_Save_to_PDF.print_to_file": True
+    }
+}
+
+# Размеры окна для разных типов контента
 WEBDRIVER_WINDOW = {
     "dashboard": (1920, 1080),
     "chart": (1920, 1080),
+    "slice": (1920, 1080),      # Добавляем для графиков
     "explore": (1920, 1080),
 }
 
-WEBDRIVER_TIMEOUT = 60
-SCREENSHOT_LOAD_WAIT = 30
-SCREENSHOT_LOCATE_WAIT = 10
+# Таймауты для загрузки страниц
+WEBDRIVER_TIMEOUT = 120
+SCREENSHOT_LOAD_WAIT = 60
+SCREENSHOT_LOCATE_WAIT = 30
+
+# Настройки для PDF
+PDF_REPORT_ORIENTATION = "landscape"
+PDF_REPORT_MARGIN = 10
+SCREENSHOT_REPLACE_URL = False
+
+# ====== ДОПОЛНИТЕЛЬНЫЕ НАСТРОЙКИ ДЛЯ ОТЧЕТОВ ======
+# Включаем поддержку разных форматов
+ENABLE_ALERTS = True
+ENABLE_SCHEDULED_EMAIL_REPORTS = True
+
+# Настройки для больших отчетов
+REPORT_DEFAULT_CUSTOM_WIDTH = 1920
+REPORT_DEFAULT_CUSTOM_HEIGHT = 1080
+REPORT_DEFAULT_SCREENSHOT_RETRY_COUNT = 3
+REPORT_DEFAULT_SCREENSHOT_RETRY_INTERVAL = 10
 
 # Включаем CORS
 ENABLE_CORS = True
@@ -90,6 +125,7 @@ FEATURE_FLAGS = {
     "ALERT_REPORTS": True,
     "OMNIBAR": True,
     "DASHBOARD_RBAC": True,
+    "ALERT_REPORT_SLACK_V2": True,
 }
 
 # Настройки кэширования
@@ -100,7 +136,7 @@ CACHE_CONFIG = {
 
 # Настройки загрузки файлов
 UPLOAD_FOLDER = '/app/uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'svg'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'svg', 'pdf'}
 MAX_CONTENT_LENGTH = 16 * 1024 * 1024
 
 # Для отладки
@@ -108,10 +144,6 @@ DEBUG = True
 TEMPLATES_AUTO_RELOAD = True
 PRESERVE_CONTEXT_ON_EXCEPTION = True
 SEND_FILE_MAX_AGE_DEFAULT = 0
-
-# ====== НАСТРОЙКИ ALERTS И REPORTS ======
-ENABLE_ALERTS = True
-ENABLE_SCHEDULED_EMAIL_REPORTS = True
 
 # Настройки Celery
 CELERY_CONFIG = {
@@ -135,6 +167,9 @@ CELERY_CONFIG = {
             "schedule": crontab(minute=0, hour=0),
         },
     },
+    "task_track_started": True,
+    "task_time_limit": 600,
+    "task_soft_time_limit": 540,
 }
 
 # ====== НАСТРОЙКИ SMTP ======
@@ -152,8 +187,9 @@ ALERT_REPORTS_NOTIFICATION_LIMIT = 100
 ALERT_REPORTS_CRON_LIMIT = 100
 
 # Время ожидания для задач
-SCHEDULED_EMAIL_REPORTS_TASK_TIMEOUT = 300
-ALERT_REPORTS_TASK_TIMEOUT = 300
+SCHEDULED_EMAIL_REPORTS_TASK_TIMEOUT = 600
+ALERT_REPORTS_TASK_TIMEOUT = 600
 
 print("[Superset Config] Конфигурация загружена")
 print("[Superset Config] WEBDRIVER_TYPE: firefox")
+print("[Superset Config] Поддержка PNG/PDF включена")

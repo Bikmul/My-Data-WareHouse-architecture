@@ -66,15 +66,21 @@ services:
       - SQLALCHEMY_DATABASE_URI=postgresql://superset:superset@superset-db:5432/superset
       - SMTP_USER=${SMTP_USER}
       - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - DISPLAY=:99
+      - PYTHONUNBUFFERED=1
     volumes:
       - superset-home:/app/superset_home
       - ./superset_config.py:/app/pythonpath/superset_config.py
     command: >
-      sh -c "celery --app=superset.tasks.celery_app:app worker
+      sh -c "
+      Xvfb :99 -screen 0 1920x1080x24 &
+      export DISPLAY=:99 &&
+      celery --app=superset.tasks.celery_app:app worker
       --pool=prefork
       -O fair
       -c 4
-      --loglevel=info"
+      --loglevel=info
+      "
     depends_on:
       superset-db:
         condition: service_healthy
