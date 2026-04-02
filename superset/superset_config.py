@@ -2,40 +2,47 @@
 
 import os
 import sys
+from celery.schedules import crontab
+from superset.tasks.types import FixedExecutor
 
 # Добавляем путь к пользовательским пакетам
 USER_SITE = '/app/superset_home/.local/lib/python3.10/site-packages'
 if USER_SITE not in sys.path:
     sys.path.insert(0, USER_SITE)
-    print(f"[Superset Config] Добавлен путь: {USER_SITE}")
-
-# Проверяем доступность драйверов
-try:
-    import psycopg2
-    print(f"[Superset Config] psycopg2 загружен")
-except ImportError as e:
-    print(f"[Superset Config] ВНИМАНИЕ: psycopg2 не загружен: {e}")
-
-try:
-    import clickhouse_connect
-    print(f"[Superset Config] clickhouse_connect загружен")
-except ImportError as e:
-    print(f"[Superset Config] ВНИМАНИЕ: clickhouse_connect не загружен: {e}")
 
 # ====== ОСНОВНЫЕ НАСТРОЙКИ ======
-
-# Настройки базы данных
 SQLALCHEMY_DATABASE_URI = 'postgresql://superset:superset@superset-db:5432/superset'
-
-# Секретный ключ
 SECRET_KEY = os.getenv('SUPERSET_SECRET_KEY', 'your-secret-key-change-this-in-production')
 
-# ====== НАСТРОЙКИ БЕЗОПАСНОСТИ (ДЛЯ ИЗОБРАЖЕНИЙ И HANDLEBARS) ======
-
-# ОТКЛЮЧАЕМ TALISMAN - главный блокировщик внешних ресурсов
+# ====== НАСТРОЙКИ БЕЗОПАСНОСТИ ======
 TALISMAN_ENABLED = False
+WEBDRIVER_BASEURL = "http://superset-app:8088"
 
-# Включаем CORS для внешних ресурсов
+# ====== ALERTS И REPORTS ======
+ALERT_REPORTS_NOTIFICATION_DRY_RUN = False
+ALERT_REPORTS_EXECUTORS = [FixedExecutor("admin")]
+
+# ====== WEBDRIVER НАСТРОЙКИ ДЛЯ FIREFOX ======
+WEBDRIVER_TYPE = "firefox"
+
+WEBDRIVER_OPTION_ARGS = [
+    "--headless",
+    "--no-sandbox",
+    "--disable-dev-shm-usage",
+    "--window-size=1920,1080"
+]
+
+WEBDRIVER_WINDOW = {
+    "dashboard": (1920, 1080),
+    "chart": (1920, 1080),
+    "explore": (1920, 1080),
+}
+
+WEBDRIVER_TIMEOUT = 60
+SCREENSHOT_LOAD_WAIT = 30
+SCREENSHOT_LOCATE_WAIT = 10
+
+# Включаем CORS
 ENABLE_CORS = True
 CORS_OPTIONS = {
     'supports_credentials': True,
@@ -44,7 +51,7 @@ CORS_OPTIONS = {
     'origins': ['*']
 }
 
-# ОТКЛЮЧАЕМ Content Security Policy (CSP)
+# Отключаем Content Security Policy
 CONTENT_SECURITY_POLICY = None
 CONTENT_SECURITY_POLICY_WARNING = False
 CONTENT_SECURITY_POLICY_REPORT_ONLY = False
@@ -68,24 +75,18 @@ PROXY_FIX_CONFIG = {
     'x_prefix': 1
 }
 
-# CSRF настройки (можно включить позже)
-WTF_CSRF_ENABLED = False  # Временно отключаем для теста
+# CSRF настройки
+WTF_CSRF_ENABLED = False
 WTF_CSRF_TIME_LIMIT = 3600
 
 # ====== ФУНКЦИОНАЛЬНОСТЬ ======
-
 FEATURE_FLAGS = {
-    # Включаем Handlebars шаблонизатор
     "ENABLE_TEMPLATE_PROCESSING": True,
-    
-    # Дополнительные функции
     "DASHBOARD_CROSS_FILTERS": True,
     "DASHBOARD_NATIVE_FILTERS": True,
     "ENABLE_DND_WITH_CLICK_UX": True,
     "ENABLE_EXPLORE_DRAG_AND_DROP": True,
     "ENABLE_JAVASCRIPT_CONTROLS": True,
-    
-    # Для лучшей работы с данными
     "ALERT_REPORTS": True,
     "OMNIBAR": True,
     "DASHBOARD_RBAC": True,
@@ -100,7 +101,7 @@ CACHE_CONFIG = {
 # Настройки загрузки файлов
 UPLOAD_FOLDER = '/app/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'svg'}
-MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB
+MAX_CONTENT_LENGTH = 16 * 1024 * 1024
 
 # Для отладки
 DEBUG = True
@@ -108,7 +109,51 @@ TEMPLATES_AUTO_RELOAD = True
 PRESERVE_CONTEXT_ON_EXCEPTION = True
 SEND_FILE_MAX_AGE_DEFAULT = 0
 
+# ====== НАСТРОЙКИ ALERTS И REPORTS ======
+ENABLE_ALERTS = True
+ENABLE_SCHEDULED_EMAIL_REPORTS = True
+
+# Настройки Celery
+CELERY_CONFIG = {
+    "broker_url": "redis://superset-redis:6379/0",
+    "result_backend": "redis://superset-redis:6379/0",
+    "imports": ["superset.tasks.scheduler"],
+    "task_serializer": "json",
+    "result_serializer": "json",
+    "accept_content": ["json"],
+    "task_ignore_result": True,
+    "worker_prefetch_multiplier": 1,
+    "task_acks_late": True,
+    "timezone": "UTC",
+    "beat_schedule": {
+        "reports.scheduler": {
+            "task": "reports.scheduler",
+            "schedule": crontab(minute="*", hour="*"),
+        },
+        "reports.prune_log": {
+            "task": "reports.prune_log",
+            "schedule": crontab(minute=0, hour=0),
+        },
+    },
+}
+
+# ====== НАСТРОЙКИ SMTP ======
+EMAIL_NOTIFICATIONS = True
+SMTP_HOST = "smtp.gmail.com"
+SMTP_PORT = 587
+SMTP_STARTTLS = True
+SMTP_SSL = False
+SMTP_USER = os.environ.get('SMTP_USER', '')
+SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD', '')
+SMTP_MAIL_FROM = SMTP_USER
+
+# Настройки для тестирования
+ALERT_REPORTS_NOTIFICATION_LIMIT = 100
+ALERT_REPORTS_CRON_LIMIT = 100
+
+# Время ожидания для задач
+SCHEDULED_EMAIL_REPORTS_TASK_TIMEOUT = 300
+ALERT_REPORTS_TASK_TIMEOUT = 300
+
 print("[Superset Config] Конфигурация загружена")
-print("[Superset Config] TALISMAN_ENABLED: False - внешние изображения разрешены")
-print("[Superset Config] CSP: Отключен - JavaScript разрешен")
-print("[Superset Config] Handlebars: Включен")
+print("[Superset Config] WEBDRIVER_TYPE: firefox")

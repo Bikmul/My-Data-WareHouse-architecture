@@ -1,7 +1,7 @@
 # Игнорировать данные ClickHouse
 clickhouse-cluster-2x2/**/data/
 clickhouse-cluster-2x2/**/logs/
-clickhouse-cluster-2x2/**/datalogs/
+clickhouse-cluster-2x2/**/datalog/
 clickhouse-cluster-2x2/**/*.log
 
 # Docker volumes
@@ -33,3 +33,9 @@ docker-compose.override.yml
 *.tar
 *.tar.gz
 *.zip
+
+# Картинки
+png
+
+# Superset
+superset/
