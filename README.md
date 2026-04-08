@@ -13,21 +13,20 @@ flowchart LR
     subgraph CURRENT [📦 Текущая архитектура]
         direction TB
         A[🌐 Веб-сайты & API] --> B[🔄 Airflow]
-        B --> ClickHouse{⚡ ClickHouse 2x2}
+        B--> CHCluster
         
-        subgraph CH [ClickHouse Cluster]
+        subgraph CHCluster [ClickHouse Cluster]
             direction LR
             C1[Шард 1-A] <--> C2[Шард 1-B]
             C3[Шард 2-C] <--> C4[Шард 2-D]
         end
         
-        ClickHouse --> CH
-        CH --> D[📊 Superset]
+        CHCluster --> D[📊 Superset]
         D --> E[Дашборды KPI]
         D --> F[Бизнес аналитика]
         D --> G[Автоотчеты]
         
-        Z[ZooKeeper] --> CH
+        Z[ZooKeeper] --> CHCluster
     end
 
     %% Связи
