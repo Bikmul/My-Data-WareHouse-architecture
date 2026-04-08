@@ -1,30 +1,25 @@
-
-drop VIEW car_price_history_mv  on cluster cluster_2shards_2replicas;
--- Создаем материализованное представление
-CREATE MATERIALIZED VIEW car_price_history_mv  on cluster cluster_2shards_2replicas
-TO car_price_history_local
-AS 
 WITH 
     ordered_prices AS (
         SELECT 
             offer_url,
+            image_url,
             brand,
             model,
             body_id,
             product_name,
             query_dttm,
             offer_price,
-            availability,
             creator_name,
             lagInFrame(offer_price) OVER (
                 PARTITION BY offer_url 
                 ORDER BY query_dttm
                 ROWS BETWEEN 1 PRECEDING AND 1 PRECEDING
             ) as prev_price
-        FROM car_parse_local
+        FROM car_parse
     )
 SELECT 
     offer_url,
+    image_url,
     brand,
     model,
     body_id,
@@ -38,7 +33,6 @@ SELECT
             round((offer_price - prev_price) * 100.0 / prev_price, 2)
         ELSE 0 
     END as price_change_percent,
-    availability,
     creator_name,
     CASE 
         WHEN prev_price > 0 AND offer_price < prev_price THEN 1 
@@ -47,6 +41,4 @@ SELECT
     now() as updated_at
 FROM ordered_prices
 WHERE prev_price IS NOT NULL
-  AND prev_price != offer_price;
-
-
+  and query_dttm >= (select max(query_dttm) - interval 10 second from car_parse);

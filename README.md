@@ -1,5 +1,5 @@
-```mermaid
 flowchart TD
+    %% Существующая архитектура
     A[🌐 Веб-сайты & API<br/>JSON/XML/REST] --> B[🔄 Apache Airflow<br/>DAGs & Scheduling]
     B --> C{⚡ ClickHouse Кластер 2x2<br/>Columnar Storage}
     
@@ -15,7 +15,22 @@ flowchart TD
     D --> G[📋 Автоматические отчеты]
     
     Z[📡 ZooKeeper Ensemble<br/>3 Nodes Coordination] --> C
-    
-    
+
+    %% Блок с планами развития (Roadmap)
+    subgraph ROADMAP [🚀 Планы развития]
+        direction TB
+        H[🐳 Контейнеризация<br/>Docker Compose → Kubernetes]
+        I[📡 Мониторинг & Observability<br/>Prometheus + Grafana Stack]
+        J[☁️ Вынос на арендованный сервер<br/>Dedicated / VPS / Cloud VM]
+        
+        H --> I --> J
+    end
+
+    %% Визуальные связи от текущей архитектуры к планам
+    B -.-> H
+    D -.-> I
+    C -.-> J
+
+    %% Стили
     linkStyle default stroke:#b0bec5,stroke-width:1.5px
-```
+    linkStyle 4,5,6 stroke:#ffb74d,stroke-width:2px,stroke-dasharray:5
