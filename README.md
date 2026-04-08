@@ -3,9 +3,9 @@ flowchart LR
     %% Блок развития (слева)
     subgraph ROADMAP [🚀 Планы развития]
         direction TB
-        H[🐳 Контейнеризация<br/>Docker → K8s (Повышение отказоустойчивости и расширенные возможности управления ресурсами)]
-        I[📡 Prometheus + Grafana (Мониторинг ресурсов каждой из АС)]
-        J[☁️ Вынос на VPS (Для получения полной независимости от хоста (моего компа)+ возможнось выделить больше ресурсов)]
+        H[🐳 Контейнеризация<br/>Docker → K8s<br/>Повышение отказоустойчивости<br/>и расширенные возможности управления ресурсами]
+        I[📡 Prometheus + Grafana<br/>Мониторинг ресурсов каждой из АС]
+        J[☁️ Вынос на VPS<br/>Полная независимость от хоста т.е моего компа <br/>+ возможность выделить больше ресурсов]
         H --> I --> J
     end
 
@@ -13,20 +13,21 @@ flowchart LR
     subgraph CURRENT [📦 Текущая архитектура]
         direction TB
         A[🌐 Веб-сайты & API] --> B[🔄 Airflow]
-        B --> C{⚡ ClickHouse 2x2}
+        B --> ClickHouse{⚡ ClickHouse 2x2}
         
-        subgraph C [Distributed Database]
+        subgraph CH [ClickHouse Cluster]
             direction LR
             C1[Шард 1-A] <--> C2[Шард 1-B]
             C3[Шард 2-C] <--> C4[Шард 2-D]
         end
         
-        C --> D[📊 Superset]
+        ClickHouse --> CH
+        CH --> D[📊 Superset]
         D --> E[Дашборды KPI]
         D --> F[Бизнес аналитика]
         D --> G[Автоотчеты]
         
-        Z[ZooKeeper] --> C
+        Z[ZooKeeper] --> CH
     end
 
     %% Связи
